@@ -2,7 +2,7 @@ from microservice import db
 import enum
 
 
-MenuItems = db.Table(
+menuitems = db.Table(
     "menuitems",
     db.Column("menu_id", db.Integer, db.ForeignKey("menu.id"), primary_key=True),
     db.Column("food_id", db.Integer, db.ForeignKey("food.id"), primary_key=True),
@@ -32,7 +32,18 @@ class Menu(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurant.id"))
 
     restaurant = db.relationship("Restaurant", back_populates="menus")
-    foods = db.relationship("Food", secondary=MenuItems, back_populates="menu")
+    foods = db.relationship("Food", secondary=menuitems, back_populates="menu")
+
+    def serialize_menu(self):
+        foods = []
+        if self.foods:
+            foods = [food.serialize_food() for food in self.foods]
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "foods" : foods,
+            "restaurant_id" : self.restaurant_id,
+        }
 
 
 class Food(db.Model):
@@ -43,4 +54,11 @@ class Food(db.Model):
     name = db.Column(db.Text(100))
     price = db.Column(db.Float)
 
-    menu = db.relationship("Menu", secondary=MenuItems, back_populates="foods")
+    menu = db.relationship("Menu", secondary=menuitems, back_populates="foods")
+
+    def serialize_food(self):
+        return{
+            "category" : self.category.name,
+            "name" : self.name,
+            "price" : self.price,
+        }

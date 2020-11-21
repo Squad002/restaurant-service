@@ -11,3 +11,6 @@ class Table(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurant.id"))
 
     restaurant = db.relationship("Restaurant", back_populates="tables")
+
+    def serialize(self, keys):
+        return dict([(k, v) for k, v in self.__dict__.items() if k in keys])

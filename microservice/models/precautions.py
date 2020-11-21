@@ -7,3 +7,6 @@ class Precaution(db.Model):
     name = db.Column(db.Text(100))
 
     restaurant = db.relationship("Restaurant", secondary=restaurantprecautions, back_populates="precautions")
+
+    def serialize(self, keys):
+        return dict([(k, v) for k, v in self.__dict__.items() if k in keys])

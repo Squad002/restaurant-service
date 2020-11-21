@@ -51,7 +51,7 @@ paths:
                     "lon": 85.24,
                     "phone": "+39 561256145",
                     "time_of_stay": 180,
-                    "cuisine_type": "Ethnic",
+                    "cuisine_type": "ETHNIC",
                     "opening_hours": 10,
                     "closing_hours": 24,
                     "operator_id": 6,
@@ -64,7 +64,7 @@ paths:
                     "lon": 85.84,
                     "phone": "+39 198661459",
                     "time_of_stay": 90,
-                    "cuisine_type": "Pub",
+                    "cuisine_type": "PUB",
                     "opening_hours": 20,
                     "closing_hours": 4,
                     "operator_id": 12,
@@ -116,7 +116,7 @@ paths:
         - "Table"
     get:
       x-openapi-router-controller: microservice.api.tables
-      summary: "Get all the tables of a particular restaurant"
+      summary: "Get all the tables of a specific restaurant"
       parameters:
         - name: restaurant_id
           in: query
@@ -351,8 +351,8 @@ components:
         cuisine_type:
           type: string
           description: "The cuisine type of the restaurant"
-          enum: [Ethnic, Fast Food, Pub]
-          example: "Ethnic"
+          enum: [ETHNIC, FAST_FOOD, PUB]
+          example: "ETHNIC"
         opening_hours:
           type: integer
           description: "The opening hours of the restaurant"
@@ -369,6 +369,12 @@ components:
           type: number
           description: "Average rating of the restaurant"
           example: 3.7
+        precautions:
+          type: array
+          items:
+            type: object
+          description: "List of precautions"
+          example: [{"name": "Hands sanitizer"}, {"name": "Social distancing"}]
     Table:
       type: object
       properties:
@@ -407,7 +413,7 @@ components:
           items:
             type: object
           description: "List of foods"
-          example: [{"category": "Starters", "name": "Pepperoni pizza", "price": 5.60}]
+          example: [{"category": "STARTERS", "name": "Pepperoni pizza", "price": 5.60}]
         restaurant_id:
           type: integer
           description: "Id of the restaurant that is associated to the menu"
@@ -418,7 +424,7 @@ components:
         category:
           type: string
           description: "Food category"
-          enum: ["Starters", "Main Courses", "Side Dishes", "Desserts", "Drinks", "Pizzas", "Burgers", "Sandwiches"]
+          enum: ["STARTERS", "MAIN_COURSES", "SIDE_DISHES", "DESSERTS", "DRINKS", "PIZZAS", "BURGERS", "SANDWICHES"]
         name:
           type: string
           description: "Name of the food"

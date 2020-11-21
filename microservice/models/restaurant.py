@@ -43,3 +43,17 @@ class Restaurant(SearchableMixin, db.Model):
     tables = db.relationship("Table", back_populates="restaurant")
     reviews = db.relationship("Review", back_populates="restaurant")
     menus = db.relationship("Menu", back_populates="restaurant")
+
+    def serialize(self, keys):
+        restaurants = dict([(k, v) for k, v in self.__dict__.items() if k in keys])
+        
+        if "precautions" in keys:
+            restaurants["precautions"] = []
+            for precaution in self.precautions:
+                restaurants["precautions"].add(precaution.serialize())
+        if "reviews" in keys:
+            restaurants["reviews"] = []
+            for precaution in self.precautions:
+                restaurants["reviews"].add(precaution.serialize())
+
+        return restaurants

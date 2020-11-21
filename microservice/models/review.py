@@ -13,3 +13,6 @@ class Review(TimestampMixin, db.Model):
 
     rating = db.Column(db.SmallInteger, nullable=False)
     message = db.Column(db.UnicodeText)
+
+    def serialize(self, keys):
+        return dict([(k, v) for k, v in self.__dict__.items() if k in keys])
