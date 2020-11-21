@@ -1,4 +1,4 @@
-from monolith import db
+from microservice import db
 import enum
 
 

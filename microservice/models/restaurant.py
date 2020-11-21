@@ -4,9 +4,9 @@ from .table import Table
 import enum
 import datetime
 
-precautions = db.Table('precautions',
+restaurantprecautions = db.Table('restaurantprecautions',
     db.Column('precaution_id', db.Integer, db.ForeignKey('precaution.id'), primary_key=True),
-    db.Column('restaurant', db.Integer, db.ForeignKey('restaurant.id'), primary_key=True)
+    db.Column('restaurant_id', db.Integer, db.ForeignKey('restaurant.id'), primary_key=True)
 )
 
 
@@ -39,7 +39,7 @@ class Restaurant(SearchableMixin, db.Model):
     operator_id = db.Column(db.Integer)
     average_rating = db.Column(db.Integer, default=0)
 
-    precautions = db.relationship("Precaution", secondary=precautions, back_populates="restaurant")
+    precautions = db.relationship("Precaution", secondary=restaurantprecautions, back_populates="restaurant")
     tables = db.relationship("Table", back_populates="restaurant")
     reviews = db.relationship("Review", back_populates="restaurant")
     menus = db.relationship("Menu", back_populates="restaurant")

@@ -1,9 +1,9 @@
 from microservice import db
-from restaurant import precautions
+from .restaurant import restaurantprecautions
 
-class Precautions(db.Model):
-    __tablename__ = "precautions"
+class Precaution(db.Model):
+    __tablename__ = "precaution"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text(100))
 
-    restaurant = db.relationship("Restaurant", secondary=precautions, back_populates="precautions")
+    restaurant = db.relationship("Restaurant", secondary=restaurantprecautions, back_populates="precautions")

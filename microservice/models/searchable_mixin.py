@@ -1,5 +1,5 @@
-from monolith import db
-from monolith.services import search
+from microservice import db
+from microservice.services import search
 
 
 class SearchableMixin(object):

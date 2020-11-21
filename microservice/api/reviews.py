@@ -11,7 +11,3 @@ def post():
 
 def get():
     pass
-
-
-def get_by_id(id):
-    pass

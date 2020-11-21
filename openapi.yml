@@ -25,9 +25,61 @@ paths:
           description: "Already Exist"
       tags:
         - "Restaurant"
+    get:
+      x-openapi-router-controller: microservice.api.restaurants
+      summary: "Get all restaurants registered in the app"
+      parameters:
+        - name: operator_id
+          in: query
+          required: false
+          description: The id of the operator
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/operator_id"
+          example:
+            "operator_id": 5
+      responses:
+        "200":
+          description: "List of attributes of the restaurants"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Restaurant"
+              example:
+                [
+                  {
+                    "id": 5,
+                    "name": "Trattoria da Gino",
+                    "lat": 64.36,
+                    "lon": 85.24,
+                    "phone": "+39 561256145",
+                    "time_of_stay": 180,
+                    "cuisine_type": "Ethnic",
+                    "opening_hours": 10,
+                    "closing_hours": 24,
+                    "operator_id": 6,
+                    "average_rating": 3.7
+                  },
+                  {
+                    "id": 5,
+                    "name": "Sample Pub",
+                    "lat": 64.14,
+                    "lon": 85.84,
+                    "phone": "+39 198661459",
+                    "time_of_stay": 90,
+                    "cuisine_type": "Pub",
+                    "opening_hours": 20,
+                    "closing_hours": 4,
+                    "operator_id": 12,
+                    "average_rating": 4.9
+                  }
+                ]
+      tags:
+        - "Restaurant"
+
   /restaurants/{id}:
     get:
       x-openapi-router-controller: microservice.api.restaurants
+      operationId: get_by_id
       summary: "Get a restaurant specified by Id"
       parameters:
         - name: id
@@ -65,6 +117,117 @@ paths:
           description: "Already Exist"
       tags:
         - "Table"
+    get:
+      x-openapi-router-controller: microservice.api.tables
+      summary: "Get all the tables of a particular restaurant"
+      parameters:
+        - name: restaurant_id
+          in: query
+          required: true
+          description: The id of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/id"
+      responses:
+        "200":
+          description: "The list of tables associated to a restaurant"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Table"
+              example:
+                [
+                  {
+                    "id": 5,
+                    "name": "A7",
+                    "seats" : 10
+                  },
+                  {
+                    "id": 1,
+                    "name": "A10",
+                    "seats" : 5
+                  }
+                ]
+        "404":
+          description: "Table not found"
+      tags:
+        - "Table"
+  
+  /tables/{id}:
+    get:
+      x-openapi-router-controller: microservice.api.tables
+      operationId: get_by_id
+      summary: "Get the table specified by id"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the table
+          schema:
+            $ref: "#/components/schemas/Table/properties/id"
+      responses:
+        "200":
+          description: "The table specified by id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Table"
+              example:
+                {
+                  "id": 5,
+                  "name": "A7",
+                  "seats" : 10
+                }
+        "404":
+          description: "Table not found"
+      tags:
+        - "Table"
+    patch:
+      x-openapi-router-controller: microservice.api.tables
+      operationId: patch
+      summary: "Edit the attributes of the table"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the table
+          schema:
+            $ref: "#/components/schemas/Table/properties/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Table"
+            example:
+              "name": "A5"
+              "seats": "10"
+      responses:
+        "204":
+          description: "Resource updated"
+        "404":
+          description: "Table not found"
+        "400":
+          description: "A table with the same name already exists"
+      tags:
+        - "Table"
+    delete:
+      x-openapi-router-controller: microservice.api.users
+      summary: "Delete the table"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the table
+          schema:
+            $ref: "#/components/schemas/Table/properties/id"
+      responses:
+        "204":
+          description: "Table deleted"
+        "404":
+          description: "Table not found"
+      tags:
+        - "Table"
+
   /menus:
     post:
       x-openapi-router-controller: microservice.api.menus
@@ -83,6 +246,80 @@ paths:
       tags:
         - "Menu"
 
+  /menus/{id}:
+    get:
+      x-openapi-router-controller: microservice.api.menus
+      summary: "Get the menu specified by id"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the menu
+          schema:
+            $ref: "#/components/schemas/Menu/properties/id"
+      responses:
+        "200":
+          description: "The menu specified by id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Menu"
+        "404":
+          description: "Menu not found"
+      tags:
+        - "Menu"
+
+  /reviews:
+    post:
+      x-openapi-router-controller: microservice.api.reviews
+      summary: "Insert a new review"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Review"
+      responses:
+        "201":
+          description: "Created"
+        "409":
+          description: "Already Exist"
+      tags:
+        - "Review"
+    get:
+      x-openapi-router-controller: microservice.api.reviews
+      summary: "Get all the reviews of a particular restaurant"
+      parameters:
+        - name: restaurant_id
+          in: query
+          required: true
+          description: The id of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/id"
+          example:
+            "id": 5
+      responses:
+        "200":
+          description: "List of revies for a particular restaurant"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+              example:
+                [
+                  {
+                    "id": 5,
+                    "message": "Fantastic",
+                    "rating": 4,
+                  },
+                  {
+                    "id": 7,
+                    "message": "Super",
+                    "lat": 5,
+                  }
+                ]
+      tags:
+        - "Review"
 
 components:
   schemas:

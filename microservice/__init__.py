@@ -23,7 +23,7 @@ def create_app(config_name, updated_variables=None):
     context.push()
 
     # Database init
-    from microservice.models import User, Operator
+    from microservice.models import Restaurant, Table, Food, Menu, Review, SearchableMixin, TimestampMixin
 
     db.init_app(flask_app)
     db.create_all(app=flask_app)

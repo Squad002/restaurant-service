@@ -1,4 +1,4 @@
-from tests.fixtures import app, client, db
+""" from tests.fixtures import app, client, db
 
 from microservice.models import Operator
 
@@ -149,3 +149,4 @@ operator2 = dict(
     fiscalcode="BNCGNN95T31H501R",
     phonenumber="+39 331303313095",
 )
+ """
