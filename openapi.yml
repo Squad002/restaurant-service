@@ -35,8 +35,6 @@ paths:
           description: The id of the operator
           schema:
             $ref: "#/components/schemas/Restaurant/properties/operator_id"
-          example:
-            "operator_id": 5
       responses:
         "200":
           description: "List of attributes of the restaurants"
@@ -79,7 +77,6 @@ paths:
   /restaurants/{id}:
     get:
       x-openapi-router-controller: microservice.api.restaurants
-      operationId: get_by_id
       summary: "Get a restaurant specified by Id"
       parameters:
         - name: id
@@ -155,7 +152,6 @@ paths:
   /tables/{id}:
     get:
       x-openapi-router-controller: microservice.api.tables
-      operationId: get_by_id
       summary: "Get the table specified by id"
       parameters:
         - name: id
@@ -211,7 +207,7 @@ paths:
       tags:
         - "Table"
     delete:
-      x-openapi-router-controller: microservice.api.users
+      x-openapi-router-controller: microservice.api.tables
       summary: "Delete the table"
       parameters:
         - name: id
@@ -296,11 +292,9 @@ paths:
           description: The id of the restaurant
           schema:
             $ref: "#/components/schemas/Restaurant/properties/id"
-          example:
-            "id": 5
       responses:
         "200":
-          description: "List of revies for a particular restaurant"
+          description: "List of reviews for a particular restaurant"
           content:
             application/json:
               schema:

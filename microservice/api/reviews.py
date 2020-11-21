@@ -9,5 +9,5 @@ def post():
     pass
 
 
-def get():
+def search():
     pass

@@ -9,9 +9,9 @@ def post():
     pass
 
 
-def get():
+def search():
     pass
 
 
-def get_by_id(id):
+def get(id):
     pass
