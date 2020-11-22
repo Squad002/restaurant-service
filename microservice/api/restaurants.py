@@ -4,6 +4,9 @@ from flask.json import dumps
 from connexion import request
 from datetime import datetime
 from microservice.models import Restaurant, Precaution
+from werkzeug.datastructures import MultiDict
+
+import os
 
 
 def post():
@@ -25,12 +28,17 @@ def post():
             operator_id=restaurant["operator_id"]
         )
 
-        for precaution in restaurant["precautions"]:
-            q_precaution = db.session.query(Precaution).filter_by(name=precaution).first()
-            new_restaurant.precautions.append(q_precaution)
+        if "precautions" in restaurant:
+            for precaution in restaurant["precautions"]:
+                q_precaution = db.session.query(
+                    Precaution).filter_by(name=precaution).first()
+                new_restaurant.precautions.append(q_precaution)
 
         db.session.add(new_restaurant)
         db.session.commit()
+        os.makedirs("./microservice/static/uploads/" +
+                    str(new_restaurant.id), exist_ok=True)
+
         return Response(status=201)
 
     return Response(status=409)
@@ -65,3 +73,21 @@ def get(id):
         )
 
     return Response(status=404)
+
+
+def upload(id):
+    request.get_data()
+    req_data = request.args
+
+    restaurant = db.session.query(Restaurant).filter_by(
+        id=id, operator_id=req_data["operator_id"]).first()
+
+    if restaurant:
+        for key, uploaded_file in request.files.items():
+            uploaded_file.save(os.path.join(
+                "./microservice/static/uploads/" + str(id), uploaded_file.filename))
+
+        return Response(status=201)
+
+    return Response(status=404)
+

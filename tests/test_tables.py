@@ -184,6 +184,5 @@ restaurant = dict(
     cuisine_type="ETHNIC",
     opening_hours=12,
     closing_hours=18,
-    precautions=["Amuchina"],
     operator_id=1,
 )

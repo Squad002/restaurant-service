@@ -7,14 +7,15 @@ fileHandler.setFormatter(
 )
 
 
+
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "top secret"
 
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI") or "sqlite:///gooutsafe.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # https://avatars.dicebear.com/api/avataaars/roma%20molesta.svg
-    AVATAR_PROVIDER = "https://avatars.dicebear.com/api/avataaars/{seed}.svg"
+    # ELASTICSEARCH_URL=http://localhost:9200
+    ELASTICSEARCH_URL = os.environ.get("ELASTICSEARCH_URL")
 
     @staticmethod
     def init_app(app):

@@ -17,7 +17,7 @@ class CuisineType(enum.Enum):
 
 
 #TODO add elastic search SearchableMixin
-class Restaurant(db.Model):
+class Restaurant(db.Model, SearchableMixin):
     __tablename__ = "restaurant"
     __searchable__ = ["name", "phone", "average_rating"]
 

@@ -1,4 +1,5 @@
 from microservice import create_app
+from microservice.services import mock
 
 import os
 from dotenv import load_dotenv
@@ -15,4 +16,4 @@ app.logger.info("Booting finished")
 @app.cli.command()
 def deploy():
     """Run deployment tasks."""
-    pass
+    mock.everything()
