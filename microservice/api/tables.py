@@ -6,7 +6,6 @@ from datetime import datetime
 from microservice.models import Table
 
 
-
 def post():
     request.get_data()
     table = request.json
@@ -73,8 +72,31 @@ def get(id):
 
 
 def patch(id):
-    pass
+    table_to_edit = db.session.query(Table).filter_by(id=id).first()
+
+    in_table = request.json
+    check_table = db.session.query(Table).filter(Table.name==in_table["name"], Table.id!=id).first()
+    if table_to_edit:
+        if not check_table:
+            table_to_edit.name = in_table["name"]
+            table_to_edit.seats = in_table["seats"]
+            db.session.commit()
+
+            return Response(status=204)
+        else:
+            return Response(status=400)
+
+
+    return Response(status=404)
 
 
 def delete(id):
-    pass
+    table_to_delete = db.session.query(Table).filter_by(id=id).first()
+
+    if table_to_delete:
+        db.session.delete(table_to_delete)
+        db.session.commit()
+
+        return Response(status=204)
+
+    return Response(status=404)

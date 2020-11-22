@@ -10,7 +10,8 @@ def post():
     request.get_data()
     restaurant = request.json
 
-    new_restaurant = db.session.query(Restaurant.id).filter_by(lat=restaurant["lat"], lon=restaurant["lon"]).first()
+    new_restaurant = db.session.query(Restaurant.id).filter_by(
+        lat=restaurant["lat"], lon=restaurant["lon"]).first()
     if not new_restaurant:
         new_restaurant = Restaurant(
             name=restaurant["name"],
@@ -25,7 +26,7 @@ def post():
         )
 
         for precaution in restaurant["precautions"]:
-            new_restaurant.precautions.append(Precaution(name=precaution["name"]))
+            new_restaurant.precautions.append(Precaution(name=precaution))
 
         db.session.add(new_restaurant)
         db.session.commit()
@@ -44,25 +45,7 @@ def search():
 
     restaurants = dumps(
         [
-            restaurant.serialize(
-                [
-                    "id",
-                    "name",
-                    "lat",
-                    "lon",
-                    "phone",
-                    "time_of_stay",
-                    "cuisine_type",
-                    "opening_hours",
-                    "closing_hours",
-                    "operator_id"
-                    "average_rating"
-                    "precautions",
-                    "tables",
-                    "reviews"
-                    "menus"
-                ]
-            )
+            restaurant.serialize(restaurant)
             for restaurant in query.all()
         ]
     )
@@ -75,28 +58,7 @@ def get(id):
 
     if restaurant:
         return Response(
-            dumps(
-                restaurant.serialize(
-                    [
-                        "id",
-                        "name",
-                        "lat",
-                        "lon",
-                        "phone",
-                        "time_of_stay",
-                        "cuisine_type",
-                        "opening_hours",
-                        "closing_hours",
-                        "operator_id"
-                        "average_rating"
-                        "precautions",
-                        "tables",
-                        "reviews"
-                        "menus"
-                        
-                    ]
-                )
-            ),
+            dumps(restaurant.serialize(restaurant)),
             status=200,
             mimetype="application/json",
         )

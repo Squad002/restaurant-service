@@ -196,7 +196,7 @@ paths:
               $ref: "#/components/schemas/Table"
             example:
               "name": "A5"
-              "seats": "10"
+              "seats": 10
       responses:
         "204":
           description: "Resource updated"
@@ -279,12 +279,14 @@ paths:
         "201":
           description: "Created"
         "409":
-          description: "Already Exist"
+          description: "Already exists"
+        "404":
+          description: "Restaurant not found"
       tags:
         - "Review"
     get:
       x-openapi-router-controller: microservice.api.reviews
-      summary: "Get all the reviews of a particular restaurant"
+      summary: "Get all the reviews of a restaurant identified by Id"
       parameters:
         - name: restaurant_id
           in: query
@@ -372,9 +374,9 @@ components:
         precautions:
           type: array
           items:
-            type: object
+            type: string
           description: "List of precautions"
-          example: [{"name": "Hands sanitizer"}, {"name": "Social distancing"}]
+          example: ["Hands sanitizer", "Social distancing"]
     Table:
       type: object
       properties:
@@ -449,3 +451,7 @@ components:
           type: integer
           description: "Id of the restaurant associated to the review"
           example: 12
+        user_id:
+          type: integer
+          description: "Id of the user that have written the review"
+          example: 11

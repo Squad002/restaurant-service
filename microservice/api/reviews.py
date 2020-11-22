@@ -10,17 +10,24 @@ def post():
     request.get_data()
     review = request.json
 
+    print(review)
     restaurant = db.session.query(Restaurant.id).filter_by(id=review["restaurant_id"]).first()
     if restaurant:
-        new_review = Review(
-            restaurant_id=review["restaurant_id"],
-            rating=review["rating"],
-            message=review["message"],
-        )
+        new_review = db.session.query(Review).filter_by(user_id=review["user_id"]).first()
 
-        db.session.add(new_review)
-        db.session.commit()
-        return Response(status=201)
+        if not new_review:
+            new_review = Review(
+                restaurant_id=review["restaurant_id"],
+                rating=review["rating"],
+                message=review["message"],
+            )
+
+            db.session.add(new_review)
+            db.session.commit()
+
+            return Response(status=201)
+        else:
+            return Response(status=409)
     
     return Response(status=404)
 

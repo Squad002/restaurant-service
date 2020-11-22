@@ -4,10 +4,11 @@ from .timestamp_mixin import TimestampMixin
 
 class Review(TimestampMixin, db.Model):
     __tablename__ = "review"
-    user_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     restaurant_id = db.Column(
-        db.Integer, db.ForeignKey("restaurant.id"), primary_key=True
+        db.Integer, db.ForeignKey("restaurant.id")
     )
+    user_id = db.Column(db.Integer)
 
     restaurant = db.relationship("Restaurant", back_populates="reviews")
 

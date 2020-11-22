@@ -45,15 +45,15 @@ class Restaurant(SearchableMixin, db.Model):
     menus = db.relationship("Menu", back_populates="restaurant")
 
     def serialize(self, keys):
-        restaurants = dict([(k, v) for k, v in self.__dict__.items() if k in keys])
-        
-        if "precautions" in keys:
-            restaurants["precautions"] = []
-            for precaution in self.precautions:
-                restaurants["precautions"].add(precaution.serialize())
-        if "reviews" in keys:
-            restaurants["reviews"] = []
-            for precaution in self.precautions:
-                restaurants["reviews"].add(precaution.serialize())
-
-        return restaurants
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "phone" : self.phone,
+            "time_of_stay" : self.time_of_stay,
+            "cuisine_type" : self.cuisine_type.name,
+            "opening_hours" : self.opening_hours,
+            "closing_hours" : self.closing_hours,
+            "operator_id" : self.operator_id,
+            "average_rating" : self.average_rating,
+            "precautions" : [precaution.name for precaution in self.precautions]
+        }
