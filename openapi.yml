@@ -96,6 +96,31 @@ paths:
           description: "Restaurant not found"
       tags:
         - "Restaurant"
+    patch:
+      x-openapi-router-controller: microservice.api.restaurants
+      summary: "Modify average rating of the restaurant"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Restaurant"
+            example:
+              {"average_rating" : 3.7}
+      responses:
+        "204":
+          description: "Resource updated"
+        "404":
+          description: "Restaurant not found"
+      tags:
+        - "Restaurant"
 
   /restaurants/{id}/upload:
     post:
@@ -386,6 +411,7 @@ paths:
                 ]
       tags:
         - "Review"
+    
 
 components:
   schemas:

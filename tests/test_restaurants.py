@@ -99,6 +99,38 @@ def test_upload(client):
 
     assert res.status_code==201
 
+
+def test_patch_average_rating(client, db):
+    client.post(
+        "/restaurants",
+        json=restaurant2,
+    )
+
+    client.post(
+        "/reviews",
+        json=review
+    )
+
+    res = client.patch(
+        "/restaurants/1",
+        json={"average_rating" : 1.5}
+    )
+    rest = db.session.query(Restaurant).filter_by(id=1).first()
+
+    assert res.status_code == 204
+    assert rest.average_rating == 1.5
+    
+    
+def test_patch_average_rating_should_not_work(client, db):
+    res = client.patch(
+        "/restaurants/1",
+        json={"average_rating" : 1.5}
+    )
+
+    assert res.status_code == 404
+    
+    
+
 restaurant = dict(
     name="Trattoria da Fabio",
     phone="555123456",
@@ -122,4 +154,11 @@ restaurant2 = dict(
     opening_hours=12,
     closing_hours=18,
     operator_id=1,
+)
+
+review = dict(
+    rating=5,
+    message="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    restaurant_id=1,
+    user_id=1,
 )

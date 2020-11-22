@@ -91,3 +91,17 @@ def upload(id):
 
     return Response(status=404)
 
+
+def patch(id): 
+    restaurant = db.session.query(Restaurant).filter_by(id=id).first()
+    
+    if not restaurant:
+        return Response(status=404)
+
+    update = request.json
+
+    restaurant.average_rating = update["average_rating"]
+    db.session.commit()
+
+    return Response(status=204)
+

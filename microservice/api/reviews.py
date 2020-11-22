@@ -6,9 +6,6 @@ from datetime import datetime
 from microservice.models import Restaurant, Review
 
 
-# TODO add checks to reviews
-
-
 def post():
     request.get_data()
     review = request.json
