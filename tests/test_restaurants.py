@@ -1,9 +1,10 @@
 from tests.fixtures import app, client, db
 
-from microservice.models import Restaurant
+from microservice.models import Restaurant, Precaution
 from werkzeug.datastructures import FileStorage, MultiDict
 
 def test_post_should_be_successful(client, db):
+    db.session.add(Precaution(name="Amuchina"))
     res = client.post(
         "/restaurants",
         json=restaurant,
@@ -25,7 +26,7 @@ def test_post_should_be_successful(client, db):
 def test_post_should_be_unsuccessful(client, db):
     client.post(
         "/restaurants",
-        json=restaurant,
+        json=restaurant2,
     )
 
     res = client.post(
@@ -39,7 +40,7 @@ def test_post_should_be_unsuccessful(client, db):
 def test_get_should_return_restaurant(client):
     client.post(
         "/restaurants",
-        json=restaurant,
+        json=restaurant2,
     )
 
     res = client.get("/restaurants/1")
@@ -64,7 +65,7 @@ def test_get_should_not_return_restaurant(client):
 def test_search_should_return_results(client):
     client.post(
         "/restaurants",
-        json=restaurant,
+        json=restaurant2,
     )
 
     res = client.get("/restaurants")
@@ -83,7 +84,7 @@ def test_search_should_return_results(client):
 def test_upload(client):
     client.post(
         "/restaurants",
-        json=restaurant,
+        json=restaurant2,
     )
 
     file_path = "./tests/pizza.jpg"
@@ -99,6 +100,19 @@ def test_upload(client):
     assert res.status_code==201
 
 restaurant = dict(
+    name="Trattoria da Fabio",
+    phone="555123456",
+    lat=40.720586,
+    lon=10.10,
+    time_of_stay=30,
+    cuisine_type="ETHNIC",
+    precautions=["Amuchina"],
+    opening_hours=12,
+    closing_hours=18,
+    operator_id=1,
+)
+
+restaurant2 = dict(
     name="Trattoria da Fabio",
     phone="555123456",
     lat=40.720586,
