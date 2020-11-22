@@ -26,7 +26,8 @@ def post():
         )
 
         for precaution in restaurant["precautions"]:
-            new_restaurant.precautions.append(Precaution(name=precaution))
+            q_precaution = db.session.query(Precaution).filter_by(name=precaution).first()
+            new_restaurant.precautions.append(q_precaution)
 
         db.session.add(new_restaurant)
         db.session.commit()

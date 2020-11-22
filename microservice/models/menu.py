@@ -19,10 +19,6 @@ class FoodCategory(enum.Enum):
     BURGERS = "Burgers"
     SANDWICHES = "Sandwiches"
 
-    @classmethod
-    def choices(cls):
-        return [(choice.name, choice.value) for choice in cls]
-
 
 class Menu(db.Model):
     __tablename__ = "menu"

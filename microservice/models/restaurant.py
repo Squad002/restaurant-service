@@ -15,12 +15,9 @@ class CuisineType(enum.Enum):
     FAST_FOOD = "Fast Food"
     PUB = "Pub"
 
-    @classmethod
-    def choices(cls):
-        return [(choice.name, choice.value) for choice in cls]
 
-
-class Restaurant(SearchableMixin, db.Model):
+#TODO add elastic search SearchableMixin
+class Restaurant(db.Model):
     __tablename__ = "restaurant"
     __searchable__ = ["name", "phone", "average_rating"]
 
@@ -49,6 +46,8 @@ class Restaurant(SearchableMixin, db.Model):
             "id" : self.id,
             "name" : self.name,
             "phone" : self.phone,
+            "lat" : self.lat,
+            "lon" : self.lon,
             "time_of_stay" : self.time_of_stay,
             "cuisine_type" : self.cuisine_type.name,
             "opening_hours" : self.opening_hours,

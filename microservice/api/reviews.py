@@ -6,20 +6,22 @@ from datetime import datetime
 from microservice.models import Restaurant, Review
 
 
+# TODO add checks to reviews
+
+
 def post():
     request.get_data()
     review = request.json
 
-    print(review)
     restaurant = db.session.query(Restaurant.id).filter_by(id=review["restaurant_id"]).first()
     if restaurant:
         new_review = db.session.query(Review).filter_by(user_id=review["user_id"]).first()
-
         if not new_review:
             new_review = Review(
                 restaurant_id=review["restaurant_id"],
                 rating=review["rating"],
                 message=review["message"],
+                user_id=review["user_id"]
             )
 
             db.session.add(new_review)

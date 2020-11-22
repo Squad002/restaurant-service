@@ -3,17 +3,20 @@ from flask import Response
 from flask.json import dumps
 from connexion import request
 from datetime import datetime
-from microservice.models import Menu, Food
-
+from microservice.models import Menu, Food, Restaurant
 
 
 def post():
     request.get_data()
+
+    req_data = request.args
     new_menu = request.json
-    print(new_menu)
 
-    menu = db.session.query(Menu).filter_by(restaurant_id=new_menu["restaurant_id"],name=new_menu["name"]).first()
+    q_res = db.session.query(Restaurant).filter_by(operator_id=req_data["operator_id"]).first()
+    if q_res is None:
+        return Response(status=403)
 
+    menu = db.session.query(Menu).filter_by(name=new_menu["name"]).first()
     if not menu:
         menu = Menu(
             name=new_menu["name"],
@@ -26,11 +29,11 @@ def post():
                 price=food["price"],
             )
             menu.foods.append(foodie)
-        
+
         db.session.add(menu)
         db.session.commit()
         return Response(status=201)
-    
+
     return Response(status=409)
 
 
