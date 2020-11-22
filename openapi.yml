@@ -382,7 +382,7 @@ paths:
               example:
                 [
                   { "id": 5, "message": "Fantastic", "rating": 4 },
-                  { "id": 7, "message": "Super", "lat": 5 },
+                  { "id": 7, "message": "Super", "rating": 5 },
                 ]
       tags:
         - "Review"
