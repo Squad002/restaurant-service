@@ -2,6 +2,8 @@ from flask import current_app
 
 import logging
 
+import elasticsearch
+
 logger = logging.getLogger("monolith")
 
 
@@ -13,7 +15,23 @@ def add(index_name, model):
     for attribute in model.__searchable__:
         body[attribute] = getattr(model, attribute)
 
-    current_app.elasticsearch.index(index=index_name, id=model.id, body=body)
+    #try:
+    current_app.elasticsearch.index(index=index_name, id=model.id, body=body, timeout=5)
+    """ except elasticsearch.ConnectionTimeout as e:
+        1 - raise Exception
+        3 - force_index() - reboot needed!
+        
+        /restaurants -> ristoranti (id, name,.... )
+        celery-service:   elasticsearch.index(key, )
+
+
+        pass
+        # todo logger e
+        # todo raise exception?
+        # index everything at boot?
+    except e:
+        pass
+        # todo logger e """
 
 
 def remove(index_name, model):
