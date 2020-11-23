@@ -33,7 +33,7 @@ def test_post_should_not_add_menu(client):
 
     # recreating the same menu again
     res = client.post(
-        "/menus?operator_id=1",
+        "/menus",
         json=menu,
     )
 

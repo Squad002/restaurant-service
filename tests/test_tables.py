@@ -137,10 +137,31 @@ def test_patch_should_be_successful(client, db):
     assert q.seats == 20
 
 
-def test_patch_should_not_be_successful(client, db):
+def test_patch_should_not_be_successful_table_missing(client, db):
     res = client.patch("/tables/1", json={"name": "A2", "seats": 20})
 
     assert res.status_code == 404
+
+
+def test_patch_should_not_be_successful_table_rename(client, db):
+    client.post(
+        "/restaurants",
+        json=restaurant,
+    )
+
+    client.post(
+        "/tables",
+        json=table,
+    )
+
+    client.post(
+        "/tables",
+        json=table2,
+    )
+
+    res = client.patch("/tables/2", json={"name": "A1"})
+
+    assert res.status_code == 400
 
 
 def test_delete_should_be_successful(client, db):
@@ -170,6 +191,12 @@ def test_delete_should_not_be_successful(client, db):
 
 table = dict(
     name = "A1",
+    seats = 10,
+    restaurant_id = 1,
+)
+
+table2 = dict(
+    name = "A2",
     seats = 10,
     restaurant_id = 1,
 )

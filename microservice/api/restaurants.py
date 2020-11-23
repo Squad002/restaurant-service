@@ -77,7 +77,6 @@ def get(id):
 
 def upload(id):
     request.get_data()
-    req_data = request.args
 
     restaurant = db.session.query(Restaurant).filter_by(
         id=id).first()

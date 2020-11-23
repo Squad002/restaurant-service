@@ -10,7 +10,6 @@ def post():
     request.get_data()
     table = request.json
 
-    req_data = request.args
     new_table = db.session.query(Table.id).filter_by(name=table["name"]).first()
     
     if not new_table:
@@ -35,6 +34,7 @@ def search():
     for attr, value in req_data.items():
         query = query.filter(getattr(Table, attr) == value)
 
+    query.order_by(Table.seats)
     tables = dumps(
         [
             table.serialize()
@@ -62,7 +62,6 @@ def patch(id):
     if not table_to_edit:
         return Response(status=404)
 
-    req_data = request.args
     in_table = request.json
 
     check_table = db.session.query(Table).filter(Table.name==in_table["name"], Table.id!=id).first()

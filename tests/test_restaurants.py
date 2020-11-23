@@ -68,7 +68,7 @@ def test_search_should_return_results(client):
         json=restaurant2,
     )
 
-    res = client.get("/restaurants")
+    res = client.get("/restaurants?id=1")
 
     assert res.status_code == 200
     assert res.json[0]["name"] == restaurant["name"]
@@ -95,9 +95,23 @@ def test_upload(client):
         ]
     )
 
-    res = client.post("/restaurants/1/upload?operator_id=1", data=files)
+    res = client.post("/restaurants/1/upload", data=files)
 
     assert res.status_code==201
+
+
+def test_upload_should_not_work(client):
+    file_path = "./tests/pizza.jpg"
+    file = FileStorage(open(file_path, "rb"), "pizza.jpg", content_type="image/jpg")
+    files = MultiDict(
+        [
+            ("filename", file),
+        ]
+    )
+
+    res = client.post("/restaurants/1/upload", data=files)
+
+    assert res.status_code==404
 
 
 def test_patch_average_rating(client, db):

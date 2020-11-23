@@ -163,12 +163,6 @@ paths:
           description: The id of the restaurant
           schema:
             $ref: "#/components/schemas/Restaurant/properties/id"
-        - name: operator_id
-          in: query
-          required: true
-          description: The id of the operator
-          schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
       requestBody:
         required: true
         content:
