@@ -12,10 +12,6 @@ def post():
     req_data = request.args
     new_menu = request.json
 
-    q_res = db.session.query(Restaurant).filter_by(operator_id=req_data["operator_id"]).first()
-    if q_res is None:
-        return Response(status=403)
-
     menu = db.session.query(Menu).filter_by(name=new_menu["name"]).first()
     if not menu:
         menu = Menu(
@@ -37,12 +33,29 @@ def post():
     return Response(status=409)
 
 
+def search():
+    request.get_data()
+    req_data = request.args
+
+    query = db.session.query(Menu)
+    for attr, value in req_data.items():
+        query = query.filter(getattr(Menu, attr) == value)
+
+    menus = dumps(
+        [
+            menu.serialize_menu()
+            for menu in query.all()
+        ]
+    )
+
+    return Response(menus, status=200, mimetype="application/json")
+
+
 def get(id):
     menu = db.session.query(Menu).filter_by(id=id).first()
 
     if menu:
         menu_dict = menu.serialize_menu()
-        print(menu_dict)
         return Response(
             dumps(menu_dict),
             status=200,

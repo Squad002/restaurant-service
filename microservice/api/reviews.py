@@ -41,15 +41,7 @@ def search():
 
     reviews = dumps(
         [
-            review.serialize(
-                [
-                    "user_id",
-                    "restaurant_id",
-                    "restaurant",
-                    "rating",
-                    "message",
-                ]
-            )
+            review.serialize()
             for review in query.all()
         ]
     )

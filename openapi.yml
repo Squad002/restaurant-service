@@ -35,44 +35,69 @@ paths:
           description: The id of the operator
           schema:
             $ref: "#/components/schemas/Restaurant/properties/operator_id"
+        - name: id
+          in: query
+          required: false
+          description: The id of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/id"
+        - name: lat
+          in: query
+          required: false
+          description: The latitude of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/lat"
+        - name: lon
+          in: query
+          required: false
+          description: The longitude of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/lon"
+        - name: phone
+          in: query
+          required: false
+          description: The phone number of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/phone"
+        - name: time_of_stay
+          in: query
+          required: false
+          description: The amount of time (minutes) normally spent for a booking in the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/time_of_stay"
+        - name: cuisine_type
+          in: query
+          required: false
+          description: The cuisine type of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/cuisine_type"
+        - name: opening_hours
+          in: query
+          required: false
+          description: The opening hours of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/opening_hours"
+        - name: closing_hours
+          in: query
+          required: false
+          description: The closing hours of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/closing_hours"
+        - name: average_rating
+          in: query
+          required: false
+          description: The average_rating of the restaurant
+          schema:
+            $ref: "#/components/schemas/Restaurant/properties/average_rating"
       responses:
         "200":
-          description: "List of attributes of the restaurants"
+          description: "List of the restaurants"
           content:
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/Restaurant"
-              example:
-                [
-                  {
-                    "id": 5,
-                    "name": "Trattoria da Gino",
-                    "lat": 64.36,
-                    "lon": 85.24,
-                    "phone": "+39 561256145",
-                    "time_of_stay": 180,
-                    "cuisine_type": "ETHNIC",
-                    "opening_hours": 10,
-                    "closing_hours": 24,
-                    "operator_id": 6,
-                    "average_rating": 3.7,
-                  },
-                  {
-                    "id": 5,
-                    "name": "Sample Pub",
-                    "lat": 64.14,
-                    "lon": 85.84,
-                    "phone": "+39 198661459",
-                    "time_of_stay": 90,
-                    "cuisine_type": "PUB",
-                    "opening_hours": 20,
-                    "closing_hours": 4,
-                    "operator_id": 12,
-                    "average_rating": 4.9,
-                  },
-                ]
-      tags:
+                $ref: "#/components/schemas/Restaurant"
+      tags: 
         - "Restaurant"
 
   /restaurants/{id}:
@@ -164,18 +189,10 @@ paths:
       tags:
         - Restaurant
 
-
   /tables:
     post:
       x-openapi-router-controller: microservice.api.tables
       summary: "Register a new table"
-      parameters:
-        - name: operator_id
-          in: query
-          required: true
-          description: The id of the operator
-          schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
       requestBody:
         required: true
         content:
@@ -191,20 +208,20 @@ paths:
         - "Table"
     get:
       x-openapi-router-controller: microservice.api.tables
-      summary: "Get all the tables of a specific restaurant"
+      summary: "Get all the tables the app"
       parameters:
         - name: restaurant_id
           in: query
-          required: true
+          required: false
           description: The id of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/id"
-        - name: operator_id
+            $ref: "#/components/schemas/Table/properties/restaurant_id"
+        - name: name
           in: query
-          required: true
-          description: The id of the operator
+          required: false
+          description: The name of the table
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
+            $ref: "#/components/schemas/Table/properties/name"
         - name: seats
           in: query
           required: false
@@ -219,13 +236,6 @@ paths:
               schema:
                 items:
                 $ref: "#/components/schemas/Table"
-              example:
-                [
-                  { "id": 5, "name": "A7", "seats": 10 },
-                  { "id": 1, "name": "A10", "seats": 5 },
-                ]
-        "404":
-          description: "Table not found"
       tags:
         - "Table"
 
@@ -240,12 +250,6 @@ paths:
           description: The id of the table
           schema:
             $ref: "#/components/schemas/Table/properties/id"
-        - name: operator_id
-          in: query
-          required: true
-          description: The id of the operator
-          schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
       responses:
         "200":
           description: "The table specified by id"
@@ -256,8 +260,6 @@ paths:
               example: { "restaurant_id": 5, "name": "A7", "seats": 10 }
         "404":
           description: "Table not found"
-        "403":
-          description: "Operation forbidden"
       tags:
         - "Table"
     patch:
@@ -271,12 +273,6 @@ paths:
           description: The id of the table
           schema:
             $ref: "#/components/schemas/Table/properties/id"
-        - name: operator_id
-          in: query
-          required: true
-          description: The id of the operator
-          schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
       requestBody:
         required: true
         content:
@@ -299,8 +295,6 @@ paths:
           description: "Table not found"
         "400":
           description: "A table with the same name already exists"
-        "403":
-          description: "Operation forbidden"
       tags:
         - "Table"
     delete:
@@ -313,19 +307,11 @@ paths:
           description: The id of the table
           schema:
             $ref: "#/components/schemas/Table/properties/id"
-        - name: operator_id
-          in: query
-          required: true
-          description: The id of the operator
-          schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
       responses:
         "204":
           description: "Table deleted"
         "404":
           description: "Table not found"
-        "403":
-          description: "Operation forbidden"
       tags:
         - "Table"
 
@@ -333,13 +319,6 @@ paths:
     post:
       x-openapi-router-controller: microservice.api.menus
       summary: "Register a new menu"
-      parameters:
-        - name: operator_id
-          in: query
-          required: true
-          description: The id of the operator
-          schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
       requestBody:
         required: true
         content:
@@ -351,8 +330,38 @@ paths:
           description: "Created"
         "409":
           description: "Already Exist"
-        "403":
-          description: "Operation forbidden"
+      tags:
+        - "Menu"
+    get:
+      x-openapi-router-controller: microservice.api.menus
+      summary: "Get all menus registered in the app"
+      parameters:
+        - name: id
+          in: query
+          required: false
+          description: The id of the menu
+          schema:
+            $ref: "#/components/schemas/Menu/properties/id"
+        - name: name
+          in: query
+          required: false
+          description: The name of the menu
+          schema:
+            $ref: "#/components/schemas/Menu/properties/name"
+        - name: restaurant_id
+          in: query
+          required: false
+          description: The Id of the restaurant
+          schema:
+            $ref: "#/components/schemas/Menu/properties/restaurant_id"
+      responses:
+        "200":
+          description: "List of the restaurants"
+          content:
+            application/json:
+              schema:
+                items:
+                $ref: "#/components/schemas/Restaurant"
       tags:
         - "Menu"
 
@@ -400,14 +409,32 @@ paths:
         - "Review"
     get:
       x-openapi-router-controller: microservice.api.reviews
-      summary: "Get all the reviews of a restaurant identified by Id"
+      summary: "Get all the reviews the app"
       parameters:
+        - name: id
+          in: query
+          required: false
+          description: The id of the review
+          schema:
+            $ref: "#/components/schemas/Review/properties/id"
+        - name: rating
+          in: query
+          required: false
+          description: The rating of the review
+          schema:
+            $ref: "#/components/schemas/Review/properties/rating"
         - name: restaurant_id
           in: query
-          required: true
+          required: false
           description: The id of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/id"
+            $ref: "#/components/schemas/Review/properties/restaurant_id"
+        - name: user_id
+          in: query
+          required: false
+          description: The Id of the user that has written the review
+          schema:
+            $ref: "#/components/schemas/Review/properties/user_id"
       responses:
         "200":
           description: "List of reviews for a particular restaurant"
@@ -423,7 +450,6 @@ paths:
                 ]
       tags:
         - "Review"
-    
 
 components:
   schemas:
@@ -538,6 +564,11 @@ components:
     Food:
       type: object
       properties:
+        id:
+          type: integer
+          description: Unique identifier
+          readOnly: true
+          example: 1
         category:
           type: string
           description: "Food category"
@@ -563,6 +594,11 @@ components:
     Review:
       type: object
       properties:
+        id:
+          type: integer
+          description: Unique identifier
+          readOnly: true
+          example: 1
         rating:
           type: integer
           description: "Rating of the restaurant"

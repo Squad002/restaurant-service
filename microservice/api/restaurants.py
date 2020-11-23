@@ -54,7 +54,7 @@ def search():
 
     restaurants = dumps(
         [
-            restaurant.serialize(restaurant)
+            restaurant.serialize()
             for restaurant in query.all()
         ]
     )
@@ -67,7 +67,7 @@ def get(id):
 
     if restaurant:
         return Response(
-            dumps(restaurant.serialize(restaurant)),
+            dumps(restaurant.serialize()),
             status=200,
             mimetype="application/json",
         )
@@ -80,7 +80,7 @@ def upload(id):
     req_data = request.args
 
     restaurant = db.session.query(Restaurant).filter_by(
-        id=id, operator_id=req_data["operator_id"]).first()
+        id=id).first()
 
     if restaurant:
         for key, uploaded_file in request.files.items():

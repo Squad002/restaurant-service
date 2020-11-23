@@ -46,14 +46,14 @@ def test_get_should_return_restaurant(client):
     res = client.get("/restaurants/1")
 
     assert res.status_code == 200
-    assert res.json["name"] == restaurant["name"]
-    assert res.json["lat"] == restaurant["lat"]
-    assert res.json["lon"] == restaurant["lon"]
-    assert res.json["phone"] == restaurant["phone"]
-    assert res.json["time_of_stay"] == restaurant["time_of_stay"]
-    assert res.json["opening_hours"] == restaurant["opening_hours"]
-    assert res.json["closing_hours"] == restaurant["closing_hours"]
-    assert res.json["operator_id"] == restaurant["operator_id"]
+    assert res.json["name"] == restaurant2["name"]
+    assert res.json["lat"] == restaurant2["lat"]
+    assert res.json["lon"] == restaurant2["lon"]
+    assert res.json["phone"] == restaurant2["phone"]
+    assert res.json["time_of_stay"] == restaurant2["time_of_stay"]
+    assert res.json["opening_hours"] == restaurant2["opening_hours"]
+    assert res.json["closing_hours"] == restaurant2["closing_hours"]
+    assert res.json["operator_id"] == restaurant2["operator_id"]
 
 
 def test_get_should_not_return_restaurant(client):
