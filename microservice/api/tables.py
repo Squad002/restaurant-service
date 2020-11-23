@@ -32,7 +32,10 @@ def search():
 
     query = db.session.query(Table)
     for attr, value in req_data.items():
-        query = query.filter(getattr(Table, attr) == value)
+        if attr == "seats":
+            query = query.filter(Table.seats >= value)
+        else:
+            query = query.filter(getattr(Table, attr) == value)
 
     query = query.order_by(Table.seats)
     tables = dumps(
