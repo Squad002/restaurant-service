@@ -41,7 +41,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Restaurant"
+                items:
+                  $ref: "#/components/schemas/Restaurant"
               example:
                 [
                   {
@@ -111,9 +112,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Restaurant"
-            example:
-              {"average_rating" : 3.7}
+              type: object
+              properties:
+                average_rating:
+                  type: number
+                  example:
+                    3.7
       responses:
         "204":
           description: "Resource updated"
@@ -213,6 +217,7 @@ paths:
           content:
             application/json:
               schema:
+                items:
                 $ref: "#/components/schemas/Table"
               example:
                 [
@@ -277,10 +282,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Table"
-            example:
-              "name": "A5"
-              "seats": 10
+              type: object
+              properties:
+                name:
+                  type: string
+                  example:
+                    "A10"
+                seats:
+                  type: integer
+                  example:
+                    7
       responses:
         "204":
           description: "Resource updated"
@@ -403,6 +414,7 @@ paths:
           content:
             application/json:
               schema:
+                items:
                 $ref: "#/components/schemas/Review"
               example:
                 [
