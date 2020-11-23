@@ -1,10 +1,21 @@
 import os
-from logging import FileHandler, Formatter
+from logging import FileHandler, Formatter, StreamHandler, getLogger, INFO
+
+logFormatter = Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
+rootLogger = getLogger()
 
 fileHandler = FileHandler("microservice.log", encoding="utf-8")
+fileHandler.setFormatter(logFormatter)
+rootLogger.addHandler(fileHandler)
+
+consoleHandler = StreamHandler()
+consoleHandler.setFormatter(logFormatter)
+rootLogger.addHandler(consoleHandler)
+""" 
+logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 fileHandler.setFormatter(
     Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
-)
+) """
 
 
 
@@ -25,7 +36,7 @@ class Config:
 class ProductionConfig(Config):
     @staticmethod
     def init_app(app):
-        app.logger.addHandler(fileHandler)
+        app.logger.addHandler(rootLogger)
 
 
 class DevelopmentConfig(Config):
@@ -34,8 +45,8 @@ class DevelopmentConfig(Config):
 
     @staticmethod
     def init_app(app):
+        # if I add logger here i got duplicate messages for errors and warnings
         app.debug = True
-        app.logger.addHandler(fileHandler)
 
 
 class TestingConfig(Config):
@@ -51,12 +62,8 @@ class DockerConfig(ProductionConfig):
         ProductionConfig.init_app(app)
 
         # log to stderr
-        import logging
-        from logging import StreamHandler
-
-        file_handler = StreamHandler()
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
+        rootLogger.setLevel(INFO)
+        app.logger.addHandler(rootLogger)
 
 
 config = {

@@ -1,12 +1,15 @@
 from microservice import db
-from flask import Response
+from flask import Response, current_app
 from flask.json import dumps
 from connexion import request
 from datetime import datetime
 from microservice.models import Restaurant, Precaution
 from werkzeug.datastructures import MultiDict
+from flask import current_app
 
 import os
+
+logger = current_app.logger
 
 
 def post():
@@ -47,7 +50,6 @@ def post():
 def search():
     request.get_data()
     req_data = request.args
-
     query = db.session.query(Restaurant)
     for attr, value in req_data.items():
         query = query.filter(getattr(Restaurant, attr) == value)
@@ -64,7 +66,7 @@ def search():
 
 def get(id):
     restaurant = db.session.query(Restaurant).filter_by(id=id).first()
-
+    logger.error("PROVA")
     if restaurant:
         return Response(
             dumps(restaurant.serialize()),
