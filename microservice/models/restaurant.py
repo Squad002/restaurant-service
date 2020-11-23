@@ -45,5 +45,8 @@ class Restaurant(db.Model, SearchableMixin):
         res = dict([(k,v) for k,v in self.__dict__.items() if k[0] != '_' and k != "cuisine_type"])
         res["cuisine_type"] = self.cuisine_type.value
         res["precautions"] = [precaution.name for precaution in self.precautions]
+        res["tables"] = [table.serialize_menu() for table in self.tables]
+        res["menus"] = [menu.serialize_menu() for menu in self.menus]
+        res["reviews"] = [review.serialize() for menu in self.reviews]
 
         return res
