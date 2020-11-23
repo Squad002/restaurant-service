@@ -34,7 +34,7 @@ def search():
     for attr, value in req_data.items():
         query = query.filter(getattr(Table, attr) == value)
 
-    query.order_by(Table.seats)
+    query = query.order_by(Table.seats)
     tables = dumps(
         [
             table.serialize()
