@@ -10,11 +10,11 @@ def test_search_should_return_results(client):
     )
 
     client.post(
-        "/tables?operator_id=1",
+        "/tables?",
         json=table,
     )
 
-    res = client.get("/tables?operator_id=1&restaurant_id=1")
+    res = client.get("/tables?restaurant_id=1")
 
     assert res.status_code == 200
     assert res.json[0]["name"] == table["name"]
@@ -28,11 +28,11 @@ def test_search_should_return_empty_results(client):
     )
 
     client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
-    res = client.get("/tables?operator_id=1&restaurant_id=234234")
+    res = client.get("/tables?restaurant_id=234234")
 
     assert res.status_code == 200
     assert res.json == []
@@ -45,7 +45,7 @@ def test_post_should_be_successful(client, db):
     )
 
     res = client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
@@ -64,12 +64,12 @@ def test_post_should_be_unsuccessful(client, db):
     )
 
     client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
     res = client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
@@ -83,11 +83,11 @@ def test_get_should_return_table(client):
     )
 
     client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
-    res = client.get("/tables/1?operator_id=1")
+    res = client.get("/tables/1")
 
     assert res.status_code == 200
     assert res.json["name"] == table["name"]
@@ -96,7 +96,7 @@ def test_get_should_return_table(client):
 
 
 def test_get_should_not_return_table(client):
-    res = client.get("/tables/1?operator_id=1")
+    res = client.get("/tables/1")
 
     assert res.status_code == 404
 
@@ -106,11 +106,11 @@ def test_get_should_not_return_table(client):
     )
 
     client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
-    res = client.get("/tables/1?operator_id=1")
+    res = client.get("/tables/1")
 
     assert res.status_code == 200
     assert res.json["name"] == table["name"]
@@ -125,11 +125,11 @@ def test_patch_should_be_successful(client, db):
     )
 
     client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
-    res = client.patch("/tables/1?operator_id=1", json={"name": "A2", "seats": 20})
+    res = client.patch("/tables/1", json={"name": "A2", "seats": 20})
     q = db.session.query(Table).filter_by(id=1).first()
 
     assert res.status_code == 204
@@ -138,8 +138,7 @@ def test_patch_should_be_successful(client, db):
 
 
 def test_patch_should_not_be_successful(client, db):
-
-    res = client.patch("/tables/1?operator_id=1", json={"name": "A2", "seats": 20})
+    res = client.patch("/tables/1", json={"name": "A2", "seats": 20})
 
     assert res.status_code == 404
 
@@ -151,17 +150,17 @@ def test_delete_should_be_successful(client, db):
     )
 
     client.post(
-        "/tables?operator_id=1",
+        "/tables",
         json=table,
     )
 
-    res = client.delete("/tables/1?operator_id=1")
+    res = client.delete("/tables/1")
 
     assert res.status_code == 204
 
 
 def test_delete_should_not_be_successful(client, db):
-    res = client.delete("/tables/1?operator_id=1")
+    res = client.delete("/tables/1")
 
     assert res.status_code == 404
 

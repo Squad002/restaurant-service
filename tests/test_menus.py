@@ -10,7 +10,7 @@ def test_post_should_add_menu(client, db):
     )
 
     res = client.post(
-        "/menus?operator_id=1",
+        "/menus",
         json=menu,
     )
     
@@ -27,7 +27,7 @@ def test_post_should_not_add_menu(client):
 
     # first post to create menu
     client.post(
-        "/menus?operator_id=1",
+        "/menus",
         json=menu,
     )
 
@@ -40,6 +40,30 @@ def test_post_should_not_add_menu(client):
     assert res.status_code == 409
 
 
+def test_search(client):
+    client.post(
+        "/restaurants",
+        json=restaurant,
+    )
+
+    client.post(
+        "/menus",
+        json=menu,
+    )
+
+    res = client.get(
+        "/menus?id=1",
+    )
+
+    assert res.status_code == 200
+
+    rcv_menu = res.json
+    assert rcv_menu[0]["id"] == 1
+    assert rcv_menu[0]["name"] == menu["name"]
+    assert rcv_menu[0]["foods"] == menu["foods"]
+    assert rcv_menu[0]["restaurant_id"] == menu["restaurant_id"]
+
+
 def test_get_should_work(client):
     client.post(
         "/restaurants",
@@ -47,7 +71,7 @@ def test_get_should_work(client):
     )
 
     client.post(
-        "/menus?operator_id=1",
+        "/menus",
         json=menu,
     )
 
@@ -72,6 +96,7 @@ def test_get_should_not_work(client):
     )
 
     assert res.status_code == 404
+
 
 menu = dict(
     name="Trial Menu",

@@ -41,18 +41,9 @@ class Restaurant(db.Model, SearchableMixin):
     reviews = db.relationship("Review", back_populates="restaurant")
     menus = db.relationship("Menu", back_populates="restaurant")
 
-    def serialize(self, keys):
-        return {
-            "id" : self.id,
-            "name" : self.name,
-            "phone" : self.phone,
-            "lat" : self.lat,
-            "lon" : self.lon,
-            "time_of_stay" : self.time_of_stay,
-            "cuisine_type" : self.cuisine_type.name,
-            "opening_hours" : self.opening_hours,
-            "closing_hours" : self.closing_hours,
-            "operator_id" : self.operator_id,
-            "average_rating" : self.average_rating,
-            "precautions" : [precaution.name for precaution in self.precautions]
-        }
+    def serialize(self):
+        res = dict([(k,v) for k,v in self.__dict__.items() if k[0] != '_' and k != "cuisine_type"])
+        res["cuisine_type"] = self.cuisine_type.value
+        res["precautions"] = [precaution.name for precaution in self.precautions]
+
+        return res
