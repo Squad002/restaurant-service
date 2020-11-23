@@ -534,6 +534,21 @@ components:
             type: string
           description: "List of precautions"
           example: ["Amuchina", "Social distancing"]
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Table'
+          description: "List of restaurant tables"
+        menus:
+          type: array
+          items:
+            $ref: '#/components/schemas/Menu'
+          description: "List of restaurant menus"
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+          description: "List of restaurant reviews"
     Table:
       type: object
       properties:
@@ -553,7 +568,7 @@ components:
         restaurant_id:
           type: integer
           description: "Id of the restaurant associated to the table"
-          example: 31
+          example: 5
     Menu:
       type: object
       properties:
@@ -583,7 +598,7 @@ components:
         restaurant_id:
           type: integer
           description: "Id of the restaurant that is associated to the menu"
-          example: 7
+          example: 5
     Food:
       type: object
       properties:
@@ -634,7 +649,7 @@ components:
         restaurant_id:
           type: integer
           description: "Id of the restaurant associated to the review"
-          example: 12
+          example: 5
         user_id:
           type: integer
           description: "Id of the user that have written the review"
