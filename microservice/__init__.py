@@ -26,7 +26,7 @@ def create_app(config_name, updated_variables=None):
     flask_app.elasticsearch = Elasticsearch([es_url]) if es_url else None
 
     # Database init
-    from microservice.models import Restaurant, Table, Food, Menu, Review, SearchableMixin, TimestampMixin, Precaution
+    from microservice.models import Restaurant, Table, Food, Menu, Review, SearchableMixin, TimestampMixin
 
     db.init_app(flask_app)
     db.create_all(app=flask_app)

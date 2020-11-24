@@ -17,7 +17,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Restaurant"
+              $ref: "#/components/schemas/BaseRestaurant"
       responses:
         "201":
           description: "Created"
@@ -34,61 +34,61 @@ paths:
           required: false
           description: The id of the operator
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
+            $ref: "#/components/schemas/BaseRestaurant/properties/operator_id"
         - name: id
           in: query
           required: false
           description: The id of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/id"
+            $ref: "#/components/schemas/BaseRestaurant/properties/id"
         - name: lat
           in: query
           required: false
           description: The latitude of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/lat"
+            $ref: "#/components/schemas/BaseRestaurant/properties/lat"
         - name: lon
           in: query
           required: false
           description: The longitude of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/lon"
+            $ref: "#/components/schemas/BaseRestaurant/properties/lon"
         - name: phone
           in: query
           required: false
           description: The phone number of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/phone"
+            $ref: "#/components/schemas/BaseRestaurant/properties/phone"
         - name: time_of_stay
           in: query
           required: false
           description: The amount of time (minutes) normally spent for a booking in the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/time_of_stay"
+            $ref: "#/components/schemas/BaseRestaurant/properties/time_of_stay"
         - name: cuisine_type
           in: query
           required: false
           description: The cuisine type of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/cuisine_type"
+            $ref: "#/components/schemas/BaseRestaurant/properties/cuisine_type"
         - name: opening_hours
           in: query
           required: false
           description: The opening hours of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/opening_hours"
+            $ref: "#/components/schemas/BaseRestaurant/properties/opening_hours"
         - name: closing_hours
           in: query
           required: false
           description: The closing hours of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/closing_hours"
+            $ref: "#/components/schemas/BaseRestaurant/properties/closing_hours"
         - name: average_rating
           in: query
           required: false
           description: The average_rating of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/average_rating"
+            $ref: "#/components/schemas/BaseRestaurant/properties/average_rating"
       responses:
         "200":
           description: "List of the restaurants"
@@ -96,7 +96,7 @@ paths:
             application/json:
               schema:
                 items:
-                $ref: "#/components/schemas/Restaurant"
+                $ref: "#/components/schemas/FullRestaurant"
       tags: 
         - "Restaurant"
 
@@ -110,14 +110,14 @@ paths:
           required: true
           description: The id of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/id"
+            $ref: "#/components/schemas/BaseRestaurant/properties/id"
       responses:
         "200":
           description: "Attributes of the restaurant"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Restaurant"
+                $ref: "#/components/schemas/FullRestaurant"
         "404":
           description: "Restaurant not found"
       tags:
@@ -131,7 +131,7 @@ paths:
           required: true
           description: The id of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/id"
+            $ref: "#/components/schemas/BaseRestaurant/properties/id"
       requestBody:
         required: true
         content:
@@ -162,7 +162,7 @@ paths:
           required: true
           description: The id of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/id"
+            $ref: "#/components/schemas/BaseRestaurant/properties/id"
       requestBody:
         required: true
         content:
@@ -355,7 +355,7 @@ paths:
             application/json:
               schema:
                 items:
-                $ref: "#/components/schemas/Restaurant"
+                $ref: "#/components/schemas/FullRestaurant"
       tags:
         - "Menu"
 
@@ -456,13 +456,13 @@ paths:
           required: true
           description: The id of the restaurant
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/id"
+            $ref: "#/components/schemas/BaseRestaurant/properties/id"
         - name: operator_id
           in: query
           required: true
           description: The id of the operator
           schema:
-            $ref: "#/components/schemas/Restaurant/properties/operator_id"
+            $ref: "#/components/schemas/BaseRestaurant/properties/operator_id"
       responses:
         "204":
           description: "Operator has the permissions"
@@ -476,7 +476,7 @@ paths:
 
 components:
   schemas:
-    Restaurant:
+    BaseRestaurant:
       type: object
       properties:
         id:
@@ -534,21 +534,26 @@ components:
             type: string
           description: "List of precautions"
           example: ["Amuchina", "Social distancing"]
-        tables:
-          type: array
-          items:
-            $ref: '#/components/schemas/Table'
-          description: "List of restaurant tables"
-        menus:
-          type: array
-          items:
-            $ref: '#/components/schemas/Menu'
-          description: "List of restaurant menus"
-        reviews:
-          type: array
-          items:
-            $ref: '#/components/schemas/Review'
-          description: "List of restaurant reviews"
+    FullRestaurant:
+      allOf:     
+        - $ref: '#/components/schemas/BaseRestaurant'
+        - type: object
+          properties:
+            tables:
+              type: array
+              items:
+                $ref: '#/components/schemas/Table'
+              description: "List of restaurant tables"
+            menus:
+              type: array
+              items:
+                $ref: '#/components/schemas/Menu'
+              description: "List of restaurant menus"
+            reviews:
+              type: array
+              items:
+                $ref: '#/components/schemas/Review'
+              description: "List of restaurant reviews"
     Table:
       type: object
       properties:

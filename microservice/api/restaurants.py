@@ -3,7 +3,7 @@ from flask import Response
 from flask.json import dumps
 from connexion import request
 from datetime import datetime
-from microservice.models import Restaurant, Precaution
+from microservice.models import Restaurant
 from werkzeug.datastructures import MultiDict
 
 import os
@@ -29,10 +29,7 @@ def post():
         )
 
         if "precautions" in restaurant:
-            for precaution in restaurant["precautions"]:
-                q_precaution = db.session.query(
-                    Precaution).filter_by(name=precaution).first()
-                new_restaurant.precautions.append(q_precaution)
+            new_restaurant.precautions=','.join(restaurant["precautions"])
 
         db.session.add(new_restaurant)
         db.session.commit()
