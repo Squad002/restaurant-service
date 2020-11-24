@@ -1,10 +1,9 @@
 from tests.fixtures import app, client, db
 
-from microservice.models import Restaurant, Precaution
+from microservice.models import Restaurant
 from werkzeug.datastructures import FileStorage, MultiDict
 
 def test_post_should_be_successful(client, db):
-    db.session.add(Precaution(name="Amuchina"))
     res = client.post(
         "/restaurants",
         json=restaurant,

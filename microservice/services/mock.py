@@ -3,7 +3,6 @@ import datetime
 from microservice import db
 from microservice.models import (
     Restaurant,
-    Precaution,
     Menu,
     Table,
     Review,
@@ -12,7 +11,6 @@ from microservice.models import (
 
 
 def everything():
-    precaution()
     restaurant()
     table()
     menu()
@@ -23,6 +21,12 @@ def restaurant():
     q = db.session.query(Restaurant).filter(Restaurant.id == 1)
     restaurant = q.first()
     if restaurant is None:
+        all_prec = \
+            "Amuchina,Social distancing,\
+            Disposable menu,\
+            Personnel required to wash hands regularly,\
+            Obligatory masks for staff in public areas,\
+            Tables sanitized at the end of each meal"
         rest = Restaurant(
             name="Spaghetteria L'Archetto",
             phone=555123456,
@@ -31,12 +35,10 @@ def restaurant():
             operator_id=1,
             time_of_stay=30,
             cuisine_type="ETHNIC",
+            precautions=all_prec,
             opening_hours=12,
             closing_hours=24,
         )
-        precautions = db.session.query(Precaution).all()
-        for precaution in precautions:
-            rest.precautions.append(precaution)
         db.session.add(rest)
 
         rest = Restaurant(
@@ -47,12 +49,10 @@ def restaurant():
             operator_id=1,
             time_of_stay=90,
             cuisine_type="FAST_FOOD",
+            precautions=all_prec,
             opening_hours=0,
             closing_hours=24,
         )
-        precautions = db.session.query(Precaution).all()
-        for precaution in precautions:
-            rest.precautions.append(precaution)
         db.session.add(rest)
 
         rest = Restaurant(
@@ -63,27 +63,11 @@ def restaurant():
             operator_id=1,
             time_of_stay=180,
             cuisine_type="PUB",
+            precautions=all_prec,
             opening_hours=19,
             closing_hours=5,
         )
-        precautions = db.session.query(Precaution).all()
-        for precaution in precautions:
-            rest.precautions.append(precaution)
         db.session.add(rest)
-
-        db.session.commit()
-
-
-def precaution():
-    q = db.session.query(Precaution).filter(Precaution.id == 1)
-    precautions = q.first()
-    if precautions is None:
-        db.session.add(Precaution(name="Amuchina"))
-        db.session.add(Precaution(name="Social distancing"))
-        db.session.add(Precaution(name="Disposable menu"))
-        db.session.add(Precaution(name="Personnel required to wash hands regularly"))
-        db.session.add(Precaution(name="Obligatory masks for staff in public areas"))
-        db.session.add(Precaution(name="Tables sanitized at the end of each meal"))
 
         db.session.commit()
 

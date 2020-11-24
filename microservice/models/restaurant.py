@@ -4,11 +4,6 @@ from .table import Table
 import enum
 import datetime
 
-restaurantprecautions = db.Table('restaurantprecautions',
-    db.Column('precaution_id', db.Integer, db.ForeignKey('precaution.id'), primary_key=True),
-    db.Column('restaurant_id', db.Integer, db.ForeignKey('restaurant.id'), primary_key=True)
-)
-
 
 class CuisineType(enum.Enum):
     ETHNIC = "Ethnic"
@@ -16,7 +11,6 @@ class CuisineType(enum.Enum):
     PUB = "Pub"
 
 
-#TODO add elastic search SearchableMixin
 class Restaurant(db.Model, SearchableMixin):
     __tablename__ = "restaurant"
     __searchable__ = ["name", "phone", "average_rating"]
@@ -36,7 +30,7 @@ class Restaurant(db.Model, SearchableMixin):
     operator_id = db.Column(db.Integer)
     average_rating = db.Column(db.Integer, default=0)
 
-    precautions = db.relationship("Precaution", secondary=restaurantprecautions, back_populates="restaurant")
+    precautions = db.Column(db.Text(200), nullable=True)
     tables = db.relationship("Table", back_populates="restaurant")
     reviews = db.relationship("Review", back_populates="restaurant")
     menus = db.relationship("Menu", back_populates="restaurant")
@@ -44,9 +38,9 @@ class Restaurant(db.Model, SearchableMixin):
     def serialize(self):
         res = dict([(k,v) for k,v in self.__dict__.items() if k[0] != '_' and k != "cuisine_type"])
         res["cuisine_type"] = self.cuisine_type.value
-        res["precautions"] = [precaution.name for precaution in self.precautions]
+        res["precautions"] = str(self.precautions).split(",")
         res["tables"] = [table.serialize_menu() for table in self.tables]
         res["menus"] = [menu.serialize_menu() for menu in self.menus]
-        res["reviews"] = [review.serialize() for menu in self.reviews]
+        res["reviews"] = [review.serialize() for review in self.reviews]
 
         return res
