@@ -63,7 +63,6 @@ def search():
 
 def get(id):
     restaurant = db.session.query(Restaurant).filter_by(id=id).first()
-    logger.error("PROVA")
     if restaurant:
         return Response(
             dumps(restaurant.serialize()),
