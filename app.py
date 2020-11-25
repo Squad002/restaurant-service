@@ -1,6 +1,6 @@
 from microservice import create_app, db
 from microservice.services import mock
-from microservice.models import Restaurant, Table, Menu, Food, Review 
+from microservice.models import Restaurant, Table, Menu, Food, Review
 from flask import request
 import os
 from dotenv import load_dotenv
@@ -27,6 +27,8 @@ def delete_db():
     elif request.method == "DELETE":
         db.session.query(Restaurant).delete()
         db.session.query(Table).delete()
+        for menu in db.session.query(Menu):
+            menu.foods = []
         db.session.query(Menu).delete()
         db.session.query(Food).delete()
         db.session.commit()
