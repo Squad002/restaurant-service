@@ -99,39 +99,6 @@ def test_search_should_return_results(client):
     assert res.json[0]["operator_id"] == restaurant["operator_id"]
 
 
-def test_upload(client):
-    client.post(
-        "/restaurants",
-        json=restaurant2,
-    )
-
-    file_path = "./tests/pizza.jpg"
-    file = FileStorage(open(file_path, "rb"), "pizza.jpg", content_type="image/jpg")
-    files = MultiDict(
-        [
-            ("filename", file),
-        ]
-    )
-
-    res = client.post("/restaurants/1/upload", data=files)
-
-    assert res.status_code==201
-
-
-def test_upload_should_not_work(client):
-    file_path = "./tests/pizza.jpg"
-    file = FileStorage(open(file_path, "rb"), "pizza.jpg", content_type="image/jpg")
-    files = MultiDict(
-        [
-            ("filename", file),
-        ]
-    )
-
-    res = client.post("/restaurants/1/upload", data=files)
-
-    assert res.status_code==404
-
-
 def test_patch_average_rating(client, db):
     client.post(
         "/restaurants",

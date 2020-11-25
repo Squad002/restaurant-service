@@ -36,8 +36,6 @@ def post():
 
         db.session.add(new_restaurant)
         db.session.commit()
-        os.makedirs("./microservice/static/uploads/" +
-                    str(new_restaurant.id), exist_ok=True)
 
         return Response(status=201)
 
@@ -77,22 +75,6 @@ def get(id):
             status=200,
             mimetype="application/json",
         )
-
-    return Response(status=404)
-
-
-def upload(id):
-    request.get_data()
-
-    restaurant = db.session.query(Restaurant).filter_by(
-        id=id).first()
-
-    if restaurant:
-        for key, uploaded_file in request.files.items():
-            uploaded_file.save(os.path.join(
-                "./microservice/static/uploads/" + str(id), uploaded_file.filename))
-
-        return Response(status=201)
 
     return Response(status=404)
 

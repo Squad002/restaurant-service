@@ -172,37 +172,6 @@ paths:
       tags:
         - "Restaurant"
 
-  /restaurants/{id}/upload:
-    post:
-      x-openapi-router-controller: microservice.api.restaurants
-      operationId: upload
-      summary: "Upload photos for the restaurant specified by Id"
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The id of the restaurant
-          schema:
-            $ref: "#/components/schemas/BaseRestaurant/properties/id"
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                filename:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-      responses:
-        "201":
-          description: "Uploaded"
-        "404":
-          description: "Restaurant not found"
-      tags:
-        - Restaurant
 
   /tables:
     post:
