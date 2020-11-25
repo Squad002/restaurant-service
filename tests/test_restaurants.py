@@ -161,33 +161,6 @@ def test_patch_average_rating_should_not_work(client, db):
 
     assert res.status_code == 404
     
-
-def test_permissions_ok(client):
-    client.post(
-        "/restaurants",
-        json=restaurant2,
-    )
-
-    res = client.get(
-        "/restaurants/1/permissions?operator_id=1"
-    )
-
-    assert res.status_code == 204
-
-
-def test_permissions_ko(client):
-    client.post(
-        "/restaurants",
-        json=restaurant2,
-    )
-
-    res = client.get(
-        "/restaurants/1/permissions?operator_id=2"
-    )
-
-    assert res.status_code == 403
-
-
 def test_permissions_not_found(client):
     res = client.get(
         "/restaurants/1/permissions?operator_id=1"

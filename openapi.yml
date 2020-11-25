@@ -466,34 +466,6 @@ paths:
       tags:
         - "Review"
 
-  /restaurants/{id}/permissions:
-    get:
-      x-openapi-router-controller: microservice.api.restaurants
-      summary: "Check if the operator has the permissions for some operations"
-      operationId: check_permission
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The id of the restaurant
-          schema:
-            $ref: "#/components/schemas/BaseRestaurant/properties/id"
-        - name: operator_id
-          in: query
-          required: true
-          description: The id of the operator
-          schema:
-            $ref: "#/components/schemas/BaseRestaurant/properties/operator_id"
-      responses:
-        "204":
-          description: "Operator has the permissions"
-        "403":
-          description: "Operator has not the permissions"
-        "404":
-          description: "Restaurant not found"
-      tags:
-        - "Permissions"
-
 
 components:
   schemas:

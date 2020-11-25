@@ -110,21 +110,3 @@ def patch(id):
 
     return Response(status=204)
 
-
-def check_permission(id):
-    req_data = request.args
-
-    q = db.session.query(Restaurant).filter_by(
-        id=id, 
-    ).first()
-    if not q:
-        return Response(status=404)
-
-    q = db.session.query(Restaurant).filter_by(
-        id=id, 
-        operator_id=req_data["operator_id"]
-    ).first()
-    if not q:
-        return Response(status=403)
-
-    return Response(status=204)

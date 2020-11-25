@@ -4,6 +4,7 @@ from config import config
 from elasticsearch import Elasticsearch
 
 import connexion
+
 db = SQLAlchemy()
 
 
