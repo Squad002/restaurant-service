@@ -47,16 +47,24 @@ def post():
 def search():
     request.get_data()
     req_data = request.args
-    query = db.session.query(Restaurant)
-    for attr, value in req_data.items():
-        query = query.filter(getattr(Restaurant, attr) == value)
+    if "q" in req_data:
+        # TODO fix better search
+        restaurants = Restaurant.search(req_data["q"], int(req_data["page"]), int(req_data["perpage"]))
+        restaurants = dumps([
+                restaurant.serialize()
+                for restaurant in restaurants[0].all()
+            ])
+    else:
+        query = db.session.query(Restaurant)
+        for attr, value in req_data.items():
+            query = query.filter(getattr(Restaurant, attr) == value)
 
-    restaurants = dumps(
-        [
-            restaurant.serialize()
-            for restaurant in query.all()
-        ]
-    )
+        restaurants = dumps(
+            [
+                restaurant.serialize()
+                for restaurant in query.all()
+            ]
+        )
 
     return Response(restaurants, status=200, mimetype="application/json")
 

@@ -55,6 +55,25 @@ def test_get_should_return_restaurant(client):
     assert res.json["operator_id"] == restaurant2["operator_id"]
 
 
+def test_elastic_should_return_restaurant(client):
+    client.post(
+        "/restaurants",
+        json=restaurant2,
+    )
+
+    res = client.get(f"/restaurants/1?q=1&page=1&perpage=20")
+
+    assert res.status_code == 200
+    assert res.json["name"] == restaurant["name"]
+    assert res.json["lat"] == restaurant["lat"]
+    assert res.json["lon"] == restaurant["lon"]
+    assert res.json["phone"] == restaurant["phone"]
+    assert res.json["time_of_stay"] == restaurant["time_of_stay"]
+    assert res.json["opening_hours"] == restaurant["opening_hours"]
+    assert res.json["closing_hours"] == restaurant["closing_hours"]
+    assert res.json["operator_id"] == restaurant["operator_id"]
+
+
 def test_get_should_not_return_restaurant(client):
     res = client.get("/restaurants/1")
 

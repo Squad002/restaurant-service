@@ -89,6 +89,27 @@ paths:
           description: The average_rating of the restaurant
           schema:
             $ref: "#/components/schemas/BaseRestaurant/properties/average_rating"
+        - name: q
+          in: query
+          required: false
+          description: Query for elastic search 
+          schema:
+            type:
+              string
+        - name: page
+          in: query
+          required: false
+          description: Number of page
+          schema:
+            type:
+              integer
+        - name: perpage
+          in: query
+          required: false
+          description: Number of restaurants per page
+          schema:
+            type:
+              integer
       responses:
         "200":
           description: "List of the restaurants"
