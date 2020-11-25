@@ -117,7 +117,7 @@ paths:
             application/json:
               schema:
                 items:
-                $ref: "#/components/schemas/FullRestaurant"
+                  $ref: "#/components/schemas/FullRestaurant"
       tags: 
         - "Restaurant"
 
@@ -250,7 +250,7 @@ paths:
             application/json:
               schema:
                 items:
-                $ref: "#/components/schemas/Table"
+                  $ref: "#/components/schemas/Table"
       tags:
         - "Table"
 
@@ -376,7 +376,7 @@ paths:
             application/json:
               schema:
                 items:
-                $ref: "#/components/schemas/FullRestaurant"
+                  $ref: "#/components/schemas/FullRestaurant"
       tags:
         - "Menu"
 
@@ -457,7 +457,7 @@ paths:
             application/json:
               schema:
                 items:
-                $ref: "#/components/schemas/Review"
+                  $ref: "#/components/schemas/Review"
               example:
                 [
                   { "id": 5, "message": "Fantastic", "rating": 4 },
@@ -583,16 +583,8 @@ components:
         foods:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/Food'
           description: "List of foods"
-          example:
-            [
-              {
-                "category": "STARTERS",
-                "name": "Pepperoni pizza",
-                "price": 5.60,
-              },
-            ]
         restaurant_id:
           type: integer
           description: "Id of the restaurant that is associated to the menu"
